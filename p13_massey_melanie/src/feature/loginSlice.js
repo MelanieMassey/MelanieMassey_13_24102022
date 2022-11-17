@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
-
-
 const loginSlice = createSlice({
     name: "loginManager",
     initialState: {
@@ -13,7 +10,7 @@ const loginSlice = createSlice({
         token: null,
       },
     reducers: {
-        // On récupère le token lors du login pour le mettre dans le State
+        // Action Login => On récupère le token et passe isConnected à "true" 
         login: (state, action) => {
             return {
                 ...state,
@@ -22,22 +19,24 @@ const loginSlice = createSlice({
             }
         },
 
+        // Action Logout => On vide le token et passe isConnected à "false"
         logout: (state, action) => {
             return {
                 ...state,
                 isConnected: false,
                 token: ""
             }
-        }
+        },
 
-        // On récupère les infos de l'utilisateur
-        // getUser: (state, action) => {
-        //     return {
-        //         ...state,
-        //         firstName: action.payload.firstName,
-        //         lastName: action.payload.lastName,
-        //     }
-        // },
+        // Action getUser => On récupère les infos de l'utilisateur
+        getUser: (state, action) => {
+            return {
+                ...state,
+                email: action.payload.email,
+                firstName: action.payload.firstName,
+                lastName: action.payload.lastName,
+            }
+        },
     },
 })
 

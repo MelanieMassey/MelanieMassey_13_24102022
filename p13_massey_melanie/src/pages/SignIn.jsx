@@ -4,7 +4,7 @@ import React from "react";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getToken } from '../api/apiCalls';
+import { getToken, getUserInfo } from '../api/apiCalls';
 import * as loginSlice from '../feature/loginSlice';
 
 
@@ -17,18 +17,26 @@ function SignIn() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     
-    async function submitHandler(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
-        const response = await getToken({email, password})
-        console.log(response)
+        const token = await getToken({email, password})
+        console.log(password)
+        console.log(token)
         
-        if(response){
-            dispatch(loginSlice.login({token:response}))
+        if(token){
+            dispatch(loginSlice.login({token:token}))
         }    
+    }
+
+    async function getUser(){
+        const userInfo = await getUserInfo(stateToken);
+        console.log(userInfo)
+        dispatch(loginSlice.getUser({firstName: userInfo.firstName, lastName: userInfo.lastName, email: userInfo.email}))
     }
 
     useEffect(()=>{
         if(stateToken){
+            getUser()
             navigate("/userProfile")
         }
     })
@@ -38,7 +46,7 @@ function SignIn() {
             <section className="sign-in-content">
                 <i className="fa fa-user-circle sign-in-icon"></i>
                 <h1>Sign In</h1>
-                <form onSubmit={(e) => submitHandler(e)}>
+                <form onSubmit={(e) => handleSubmit(e)}>
                 <div className="input-wrapper">
                     <label htmlFor="username">Username</label>
                     <input type="text" id="username" onChange={(e) => setEmail(e.target.value)}/>
