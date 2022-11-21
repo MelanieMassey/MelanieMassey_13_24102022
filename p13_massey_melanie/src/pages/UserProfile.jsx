@@ -1,13 +1,37 @@
 import '../style/UserProfile.css';
 import React from "react";
+import { useState } from 'react';
+import * as loginSlice from '../feature/loginSlice';
+import { useSelector } from 'react-redux';
 
 function UserProfile() {
+    const [profileForm, setProfileForm] = useState(false)
+    const firstName = useSelector((state) => state.login.firstName)
+    const lastName = useSelector((state) => state.login.lastName)
+    console.log(firstName)
+
     return(
         <main className="main bg-dark">
-            <div className="header">
-                <h1>Welcome back<br />Tony Jarvis!</h1>
-                <button className="edit-button">Edit Name</button>
-            </div>
+            {!profileForm? (
+                <div className="header">
+                    <h1>Welcome back<br />{firstName + " " + lastName + "!"}</h1>
+                    <button className="edit-button" onClick={() => setProfileForm(true)}>Edit Name</button>
+                </div>
+            ):(
+                <div className="header">
+                    <h1>Welcome back</h1>
+                    <form>
+                        <div>
+                            <input type="text" id="edit-firstName" value={firstName}/>
+                            <input type="text" id="edit-lastName" value={lastName}/>
+                        </div>
+                        <div className="form-buttons">
+                            <button className="save-button">Save</button>
+                            <button className="cancel-button" onClick={() => setProfileForm(false)}>Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            )}
             <h2 className="sr-only">Accounts</h2>
             <section className="account">
                 <div className="account-content-wrapper">

@@ -19,6 +19,7 @@ function Header() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const stateIsConnected = useSelector((state) => state.login.isConnected)
+    const firstName = useSelector((state) => state.login.firstName)
 
     function handleLogout(e) {
         e.preventDefault();
@@ -27,7 +28,6 @@ function Header() {
     }
 
     return(
-        
             <nav className="main-nav">
                 <NavLink to="/" className="main-nav-logo">
                     <img className="main-nav-logo-image" src={logo} alt="Argent Bank Logo"/>
@@ -38,7 +38,7 @@ function Header() {
                         <>
                             <NavLink to="/sign-in" className="main-nav-item">
                                 <FaUserCircle className='fa fa-user-circle'/>
-                                Name
+                                {firstName}
                             </NavLink>
                             <button type="button" className="main-nav-item" onClick={(e) => handleLogout(e)}>
                                 <MdLogout className='MdLogout'/>
@@ -51,7 +51,6 @@ function Header() {
                             Sign In
                         </NavLink>
                     )}
-                    
                 </div>
                 
             </nav>

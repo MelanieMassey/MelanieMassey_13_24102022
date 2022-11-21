@@ -23,8 +23,11 @@ const loginSlice = createSlice({
         logout: (state, action) => {
             return {
                 ...state,
+                email: null,
+                firstName: null,
+                lastName: null,
                 isConnected: false,
-                token: ""
+                token: null,
             }
         },
 
