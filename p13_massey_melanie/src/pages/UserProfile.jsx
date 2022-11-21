@@ -3,18 +3,27 @@ import React from "react";
 import { useState } from 'react';
 import * as loginSlice from '../feature/loginSlice';
 import { useSelector } from 'react-redux';
+import { editUserInfo } from '../api/apiCalls';
 
 function UserProfile() {
     const [profileForm, setProfileForm] = useState(false)
-    const firstName = useSelector((state) => state.login.firstName)
-    const lastName = useSelector((state) => state.login.lastName)
-    console.log(firstName)
+    const [firstName, setFirstName]=useState()
+    const [lastName, setLastName]=useState()
+    const stateFirstName = useSelector((state) => state.login.firstName)
+    const stateLastName = useSelector((state) => state.login.lastName)
+    const stateToken = useSelector((state) => state.login.token)
+    
+    async function editProfile(){
+        const newUserInfo = await editUserInfo(stateToken, {firstName, lastName})
+        dispatchEvent(loginSlice.getUser({firstName:newUserInfo.firstName, lastName:newUserInfo.lastName}))
+        setProfileForm(false)
+    }
 
     return(
         <main className="main bg-dark">
             {!profileForm? (
                 <div className="header">
-                    <h1>Welcome back<br />{firstName + " " + lastName + "!"}</h1>
+                    <h1>Welcome back<br />{stateFirstName + " " + stateLastName + "!"}</h1>
                     <button className="edit-button" onClick={() => setProfileForm(true)}>Edit Name</button>
                 </div>
             ):(
@@ -22,11 +31,11 @@ function UserProfile() {
                     <h1>Welcome back</h1>
                     <form>
                         <div>
-                            <input type="text" id="edit-firstName" value={firstName}/>
-                            <input type="text" id="edit-lastName" value={lastName}/>
+                            <input type="text" id="edit-firstName" defaultValue={stateFirstName} onChange={(e) => setFirstName(e.target.value)}/>
+                            <input type="text" id="edit-lastName" defaultValue={stateLastName} onChange={(e) => setLastName(e.target.value)}/>
                         </div>
                         <div className="form-buttons">
-                            <button className="save-button">Save</button>
+                            <button className="save-button" onClick={() => editProfile()}>Save</button>
                             <button className="cancel-button" onClick={() => setProfileForm(false)}>Cancel</button>
                         </div>
                     </form>

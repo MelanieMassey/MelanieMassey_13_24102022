@@ -22,3 +22,14 @@ export function getUserInfo(token) {
         return response.data.body
     })
 }
+
+export function editUserInfo(token, newUserInfo) {
+    return axios.put(apiURL+"/user/profile",newUserInfo,{
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+    })
+    .then(response=>{
+        return response.data.body
+    })
+}
