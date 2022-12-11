@@ -13,7 +13,7 @@ import * as loginSlice from '../feature/loginSlice';
 function SignIn() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const stateToken = useSelector((state)=>state.login.token)
+    const stateToken = useSelector((state)=>state.token)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     

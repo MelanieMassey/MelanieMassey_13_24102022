@@ -2,20 +2,23 @@ import '../style/UserProfile.css';
 import React from "react";
 import { useState } from 'react';
 import * as loginSlice from '../feature/loginSlice';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { editUserInfo } from '../api/apiCalls';
 
 function UserProfile() {
     const [profileForm, setProfileForm] = useState(false)
     const [firstName, setFirstName]=useState()
     const [lastName, setLastName]=useState()
-    const stateFirstName = useSelector((state) => state.login.firstName)
-    const stateLastName = useSelector((state) => state.login.lastName)
-    const stateToken = useSelector((state) => state.login.token)
+    const stateFirstName = useSelector((state) => state.firstName)
+    const stateLastName = useSelector((state) => state.lastName)
+    const stateToken = useSelector((state) => state.token)
+    const dispatch = useDispatch()
+
+    console.log(firstName + " " + lastName)
     
     async function editProfile(){
         const newUserInfo = await editUserInfo(stateToken, {firstName, lastName})
-        dispatchEvent(loginSlice.getUser({firstName:newUserInfo.firstName, lastName:newUserInfo.lastName}))
+        dispatch(loginSlice.getUser({firstName:newUserInfo.firstName, lastName:newUserInfo.lastName}))
         setProfileForm(false)
     }
 
@@ -29,7 +32,7 @@ function UserProfile() {
             ):(
                 <div className="header">
                     <h1>Welcome back</h1>
-                    <form>
+                    <div>
                         <div>
                             <input type="text" id="edit-firstName" defaultValue={stateFirstName} onChange={(e) => setFirstName(e.target.value)}/>
                             <input type="text" id="edit-lastName" defaultValue={stateLastName} onChange={(e) => setLastName(e.target.value)}/>
@@ -38,7 +41,7 @@ function UserProfile() {
                             <button className="save-button" onClick={() => editProfile()}>Save</button>
                             <button className="cancel-button" onClick={() => setProfileForm(false)}>Cancel</button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             )}
             <h2 className="sr-only">Accounts</h2>

@@ -18,8 +18,8 @@ import * as loginSlice from '../../feature/loginSlice';
 function Header() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const stateIsConnected = useSelector((state) => state.login.isConnected)
-    const firstName = useSelector((state) => state.login.firstName)
+    const stateIsConnected = useSelector((state) => state.isConnected)
+    const firstName = useSelector((state) => state.firstName)
 
     function handleLogout(e) {
         e.preventDefault();
