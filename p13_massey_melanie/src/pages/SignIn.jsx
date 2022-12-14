@@ -16,16 +16,24 @@ function SignIn() {
     const stateToken = useSelector((state)=>state.token)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [rememberMe, setRememberMe] = useState(false)
+    // localStorage.setItem("email", "")
+    const localStorageEmail = localStorage.getItem("email")
+    console.log(localStorageEmail)
     
     async function handleSubmit(e) {
         e.preventDefault()
         const token = await getToken({email, password})
         console.log(password)
         console.log(token)
+        console.log(rememberMe)
         
-        if(token){
+        if(token && rememberMe){
             dispatch(loginSlice.login({token:token}))
-        }    
+            localStorage.setItem("email", email)
+        } else if(token){
+            dispatch(loginSlice.login({token:token}))
+        }
     }
 
     async function getUser(){
@@ -34,7 +42,10 @@ function SignIn() {
         dispatch(loginSlice.getUser({firstName: userInfo.firstName, lastName: userInfo.lastName, email: userInfo.email}))
     }
 
+
     useEffect(()=>{
+        
+        
         if(stateToken){
             getUser()
             navigate("/userProfile")
@@ -49,7 +60,7 @@ function SignIn() {
                 <form onSubmit={(e) => handleSubmit(e)}>
                 <div className="input-wrapper">
                     <label htmlFor="username">Username</label>
-                    <input type="text" id="username" onChange={(e) => setEmail(e.target.value)}/>
+                    <input type="text" id="username" placeholder={localStorageEmail} onChange={(e) => setEmail(e.target.value)}/>
                     {/* <input type="text" id="username" /> */}
                 </div>
                 <div className="input-wrapper">
@@ -58,7 +69,7 @@ function SignIn() {
                     {/* <input type="password" id="password" /> */}
                 </div>
                 <div className="input-remember">
-                    <input type="checkbox" id="remember-me" />
+                    <input type="checkbox" id="remember-me" onChange={(e) => setRememberMe(!rememberMe)}/>
                     <label htmlFor="remember-me">Remember me</label>
                 </div>
                 {/* <!-- PLACEHOLDER DUE TO STATIC SITE --> */}
