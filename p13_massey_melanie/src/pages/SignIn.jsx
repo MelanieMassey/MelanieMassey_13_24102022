@@ -44,8 +44,6 @@ function SignIn() {
 
 
     useEffect(()=>{
-        
-        
         if(stateToken){
             getUser()
             navigate("/userProfile")

@@ -12,6 +12,8 @@ const loginSlice = createSlice({
     reducers: {
         // Action Login => On récupère le token et passe isConnected à "true" 
         login: (state, action) => {
+            
+            
             return {
                 ...state,
                 isConnected: true,
