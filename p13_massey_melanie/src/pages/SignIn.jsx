@@ -17,7 +17,7 @@ function SignIn() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [rememberMe, setRememberMe] = useState(false)
-    // localStorage.setItem("email", "")
+    
     const localStorageEmail = localStorage.getItem("email")
     console.log(localStorageEmail)
     
@@ -31,6 +31,9 @@ function SignIn() {
         if(token && rememberMe){
             dispatch(loginSlice.login({token:token}))
             localStorage.setItem("email", email)
+        } else if(token && !rememberMe) {
+            dispatch(loginSlice.login({token:token}))
+            localStorage.removeItem("email")
         } else if(token){
             dispatch(loginSlice.login({token:token}))
         }
